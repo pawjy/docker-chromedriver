@@ -6,9 +6,15 @@ Usage:
   $ docker run --net=host -t wakaba/docker-chromedriver:stable /cd
   $ docker run --net=host -t wakaba/docker-chromedriver:chromium /cd
 
-... then access to localhost:9515.
+... then access <http://localhost:9515/{path}>.
 
 Docker Hub: <https://registry.hub.docker.com/u/wakaba/docker-chromedriver/>
+
+
+ChromeDriver <https://sites.google.com/a/chromium.org/chromedriver/>
+ChromeDriver <https://code.google.com/p/selenium/wiki/ChromeDriver>
+The WebDriver Wire Protocol
+<https://code.google.com/p/selenium/wiki/JsonWireProtocol>
 
 
 Firefox: <https://github.com/wakaba/docker-firefoxdriver>
