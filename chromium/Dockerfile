@@ -1,35 +1,39 @@
 FROM debian:sid
 
-RUN apt-get update
-RUN apt-get -y install libglib2.0 libnss3-dev libxtst6 libxss1 libgconf-2-4 libfontconfig1 libpango1.0-0 libxcursor1 libxcomposite1 libasound2 libxdamage1 libxrandr2 libcups2 libgtk2.0-0 wget unzip libexif12 xvfb fonts-noto
+RUN apt-get update && \
+    apt-get -y install libglib2.0 libnss3-dev libxtst6 libxss1 libgconf-2-4 libfontconfig1 libpango1.0-0 libxcursor1 libxcomposite1 libasound2 libxdamage1 libxrandr2 libcups2 libgtk2.0-0 wget unzip libexif12 xvfb fonts-noto && \
+    rm -rf /var/lib/apt/lists/*
 
 RUN ln -s /lib/x86_64-linux-gnu/libudev.so.1 /lib/x86_64-linux-gnu/libudev.so.0
 
-RUN wget -O chromium.zip https://download-chromium.appspot.com/dl/Linux_x64
-RUN unzip chromium.zip
-RUN mv chrome-linux/chrome_sandbox chrome-linux/chrome-sandbox
-RUN chown root.root chrome-linux/chrome-sandbox
-RUN chmod 4755 chrome-linux/chrome-sandbox
+RUN wget -O chromium.zip https://download-chromium.appspot.com/dl/Linux_x64 && \
+    unzip chromium.zip && \
+    mv chrome-linux/chrome_sandbox chrome-linux/chrome-sandbox && \
+    chown root.root chrome-linux/chrome-sandbox && \
+    chmod 4755 chrome-linux/chrome-sandbox && \
+    rm chromium.zip
 
-RUN wget -O /tmp/chromedriver-version http://chromedriver.storage.googleapis.com/LATEST_RELEASE
-RUN wget http://chromedriver.storage.googleapis.com/`cat /tmp/chromedriver-version`/chromedriver_linux64.zip
-RUN unzip chromedriver_linux64.zip
+RUN wget -O /tmp/chromedriver-version http://chromedriver.storage.googleapis.com/LATEST_RELEASE && \
+    wget http://chromedriver.storage.googleapis.com/`cat /tmp/chromedriver-version`/chromedriver_linux64.zip && \
+    unzip chromedriver_linux64.zip && \
+    rm chromedriver_linux64.zip /tmp/chromedriver-version
 
-RUN wget --no-check-certificate https://www.google.com/get/noto/pkgs/NotoSansCJKJP-hinted.zip
-RUN unzip NotoSansCJKJP-hinted.zip
-RUN mkdir -p usr/share/fonts/truetype/noto
-RUN mv *.otf usr/share/fonts/truetype/noto/
-RUN fc-cache
+RUN wget --no-check-certificate https://www.google.com/get/noto/pkgs/NotoSansCJKJP-hinted.zip && \
+    unzip NotoSansCJKJP-hinted.zip && \
+    mkdir -p usr/share/fonts/truetype/noto && \
+    mv *.otf usr/share/fonts/truetype/noto/ && \
+    fc-cache && \
+    rm NotoSansCJKJP-hinted.zip
 
-RUN sed -i 's/"$@"/"$@" --no-sandbox/' chrome-linux/chrome-wrapper
-RUN ln -s /chrome-linux/chrome-wrapper /usr/bin/google-chrome
+RUN sed -i 's/"$@"/"$@" --no-sandbox/' chrome-linux/chrome-wrapper && \
+    ln -s /chrome-linux/chrome-wrapper /usr/bin/google-chrome
 
-RUN echo "#!/bin/bash" > /cd
-RUN echo 'Xvfb :0 -screen 0 1024x768x24 &' >> /cd
-RUN echo 'DISPLAY=:0 /chromedriver --whitelisted-ips 0.0.0.0/0' >> /cd
-RUN chmod u+x /cd
+RUN echo "#!/bin/bash" > /cd && \
+    echo 'Xvfb :0 -screen 0 1024x768x24 &' >> /cd && \
+    echo 'DISPLAY=:0 /chromedriver --whitelisted-ips 0.0.0.0/0' >> /cd && \
+    chmod u+x /cd
 
-RUN echo "#!/bin/bash" > /cd-bare
-RUN echo 'Xvfb :0 -screen 0 1024x768x24 &' >> /cd-bare
-RUN echo 'DISPLAY=:0 /chromedriver "$*"' >> /cd-bare
-RUN chmod u+x /cd-bare
+RUN echo "#!/bin/bash" > /cd-bare && \
+    echo 'Xvfb :0 -screen 0 1024x768x24 &' >> /cd-bare && \
+    echo 'DISPLAY=:0 /chromedriver "$*"' >> /cd-bare && \
+    chmod u+x /cd-bare
