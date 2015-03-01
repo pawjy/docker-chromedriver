@@ -22,3 +22,8 @@ RUN echo "#!/bin/bash" > /cd
 RUN echo 'Xvfb :0 -screen 0 1024x768x24 &' >> /cd
 RUN echo 'DISPLAY=:0 /chromedriver --whitelisted-ips 0.0.0.0/0' >> /cd
 RUN chmod u+x /cd
+
+RUN echo "#!/bin/bash" > /cd-bare
+RUN echo 'Xvfb :0 -screen 0 1024x768x24 &' >> /cd-bare
+RUN echo 'DISPLAY=:0 /chromedriver "$@"' >> /cd-bare
+RUN chmod u+x /cd-bare
