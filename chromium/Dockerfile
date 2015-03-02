@@ -35,5 +35,5 @@ RUN echo "#!/bin/bash" > /cd && \
 
 RUN echo "#!/bin/bash" > /cd-bare && \
     echo 'Xvfb :0 -screen 0 1024x768x24 &' >> /cd-bare && \
-    echo 'DISPLAY=:0 /chromedriver "$*"' >> /cd-bare && \
+    echo 'DISPLAY=:0 /chromedriver "$@"' >> /cd-bare && \
     chmod u+x /cd-bare
