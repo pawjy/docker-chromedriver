@@ -18,7 +18,7 @@ RUN wget -O /tmp/chromedriver-version http://chromedriver.storage.googleapis.com
     unzip chromedriver_linux64.zip && \
     rm chromedriver_linux64.zip /tmp/chromedriver-version
 
-RUN wget --no-check-certificate https://www.google.com/get/noto/pkgs/NotoSansCJKJP-hinted.zip && \
+RUN wget https://noto-website-2.storage.googleapis.com/pkgs/NotoSansCJKjp-hinted.zip && \
     unzip NotoSansCJKJP-hinted.zip && \
     mkdir -p usr/share/fonts/truetype/noto && \
     mv *.otf usr/share/fonts/truetype/noto/ && \
