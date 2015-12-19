@@ -23,7 +23,7 @@ RUN wget https://noto-website-2.storage.googleapis.com/pkgs/NotoSansCJKjp-hinted
     mkdir -p usr/share/fonts/truetype/noto && \
     mv *.otf usr/share/fonts/truetype/noto/ && \
     fc-cache && \
-    rm NotoSansCJKJP-hinted.zip
+    rm NotoSansCJKjp-hinted.zip
 
 RUN sed -i 's/"$@"/"$@" --no-sandbox/' chrome-linux/chrome-wrapper && \
     ln -s /chrome-linux/chrome-wrapper /usr/bin/google-chrome

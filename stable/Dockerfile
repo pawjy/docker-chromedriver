@@ -18,7 +18,7 @@ RUN wget https://noto-website-2.storage.googleapis.com/pkgs/NotoSansCJKjp-hinted
     mkdir -p usr/share/fonts/truetype/noto && \
     mv *.otf usr/share/fonts/truetype/noto/ && \
     fc-cache && \
-    rm NotoSansCJKJP-hinted.zip
+    rm NotoSansCJKjp-hinted.zip
 
 RUN echo "#!/bin/bash" > /cd && \
     echo 'Xvfb :0 -screen 0 1024x768x24 &' >> /cd && \
