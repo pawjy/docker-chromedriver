@@ -3,8 +3,8 @@ docker-chromedriver
 
 Usage:
 
-  $ docker run --net=host -t wakaba/docker-chromedriver:stable /cd
-  $ docker run --net=host -t wakaba/docker-chromedriver:chromium /cd
+  $ docker run --net=host -t quay.io/wakaba/chromedriver:stable /cd
+  $ docker run --net=host -t quay.io/wakaba/chromedriver:chromium /cd
 
 ... then access <http://localhost:9515/{path}>.
 
