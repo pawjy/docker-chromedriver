@@ -1,0 +1,35 @@
+machine:
+  services:
+    - docker
+dependencies:
+  override:
+    - git config --global user.email "temp@circleci.test"
+    - git config --global user.name "CircleCI"
+    - docker info
+    - docker build -t quay.io/wakaba/chromedriver:stable stable
+    - docker build -t quay.io/wakaba/chromedriver:chromium chromium
+test:
+  override:
+    - docker run --name server -d -p 5511:9515 quay.io/wakaba/chromedriver:stable /cd; sleep 10
+    - docker run --name server -d -p 5512:9515 quay.io/wakaba/chromedriver:chromium /cd; sleep 10
+    - curl -f http://localhost:5511/status
+    - curl -f http://localhost:5512/status
+    - docker logs server
+
+deployment:
+  docker:
+    branch: master
+    commands:
+      - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS quay.io
+      - docker push quay.io/wakaba/chromedriver:stable
+      - docker push quay.io/wakaba/chromedriver:chromium
+
+  nightly:
+    branch: nightly
+    commands:
+      - curl -f -s -S --request POST --header "Authorization:token $GITHUB_ACCESS_TOKEN" --header "Content-Type:application/json" --data-binary "{\"base\":\"master\",\"head\":\"`git rev-parse HEAD`\",\"commit_message\":\"auto-merge nightly into master\"}" "https://api.github.com/repos/wakaba/docker-chromedriver/merges"
+
+  staging:
+    branch: staging
+    commands:
+      - curl -f -s -S --request POST --header "Authorization:token $GITHUB_ACCESS_TOKEN" --header "Content-Type:application/json" --data-binary "{\"base\":\"master\",\"head\":\"`git rev-parse HEAD`\",\"commit_message\":\"auto-merge staging into master\"}" "https://api.github.com/repos/wakaba/docker-chromedriver/merges"
