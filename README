@@ -1,18 +1,22 @@
 docker-chromedriver
 ~~~~~~~~~~~~~~~~~~~
 
-Usage:
+* Usage
 
   $ docker run --net=host -t XXX/chromedriver:stable /cd
   $ docker run --net=host -t XXX/chromedriver:chromium /cd
 
 ... then access <http://localhost:9515/{path}>.
 
+* See also
 
 ChromeDriver <https://sites.google.com/a/chromium.org/chromedriver/>
 ChromeDriver <https://code.google.com/p/selenium/wiki/ChromeDriver>
 The WebDriver Wire Protocol
 <https://code.google.com/p/selenium/wiki/JsonWireProtocol>
 
-
 Firefox: <https://github.com/wakaba/docker-firefoxdriver>
+
+* Author
+
+Wakaba <wakaba@suikawiki.org>.
