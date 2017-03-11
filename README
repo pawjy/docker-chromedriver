@@ -3,8 +3,8 @@ docker-chromedriver
 
 * Usage
 
-  $ docker run --net=host -t XXX/chromedriver:stable /cd
-  $ docker run --net=host -t XXX/chromedriver:chromium /cd
+  $ docker run --net=host -t .../chromedriver:stable /cd
+  $ docker run --net=host -t .../chromedriver:chromium /cd
 
 ... then access <http://localhost:9515/{path}>.
 
@@ -20,3 +20,9 @@ Firefox: <https://github.com/wakaba/docker-firefoxdriver>
 * Author
 
 Wakaba <wakaba@suikawiki.org>.
+
+@nobuoka.
+
+* Acknowledgements
+
+Thanks to Hatena <http://hatenacorp.jp/>.
