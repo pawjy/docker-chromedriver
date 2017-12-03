@@ -1,5 +1,7 @@
 FROM debian:sid
 
+ADD cd-bare /cd-bare
+
 RUN apt-get update && \
     apt-get -y install libglib2.0 libnss3-dev libxtst6 libxss1 libgconf-2-4 libfontconfig1 libpango1.0-0 libxcursor1 libxcomposite1 libasound2 libxdamage1 libxrandr2 libcups2 libgtk-3-0 wget unzip xvfb fonts-noto fonts-liberation libexif12 \
         libappindicator1 libcurl3 xdg-utils lsb-release && \
@@ -24,10 +26,5 @@ RUN wget https://noto-website-2.storage.googleapis.com/pkgs/NotoSansCJKjp-hinted
 RUN echo "#!/bin/bash" > /cd && \
     echo 'exec /cd-bare --whitelisted-ips 0.0.0.0/0' >> /cd && \
     chmod u+x /cd
-
-RUN echo "#!/bin/bash" > /cd-bare && \
-    echo 'Xvfb :0 -screen 0 1024x768x24 &' >> /cd-bare && \
-    echo 'DISPLAY=:0 /chromedriver "$@"' >> /cd-bare && \
-    chmod u+x /cd-bare
 
 CMD ["/cd"]
