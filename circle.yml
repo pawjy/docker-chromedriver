@@ -17,14 +17,12 @@ test:
     - cd perl-web-driver-client && TEST_WD_URL=http://localhost:9515 WEBUA_DEBUG=2 make test
     - docker logs server1
     - docker kill server1
-    - docker rm server1
 
     - docker run --name server2 --net=host -d quay.io/wakaba/chromedriver:chromium /cd
     - while [ ! curl -f http://localhost:9515/status ]; do sleep 1; done
     - cd perl-web-driver-client && TEST_WD_URL=http://localhost:9515 WEBUA_DEBUG=2 make test
     - docker logs server2
     - docker kill server2
-    - docker rm server2
 
 deployment:
   docker:
