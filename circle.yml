@@ -12,12 +12,12 @@ dependencies:
     - cd perl-web-driver-client && make test-deps
 test:
   override:
-    - docker run --name server1 -d -p 5511:9515 quay.io/wakaba/chromedriver:stable /cd; sleep 10
+    - docker run --name server1 --net=host -d -p 5511:9515 quay.io/wakaba/chromedriver:stable /cd; sleep 10
     - curl -f http://localhost:5511/status
     - cd perl-web-driver-client && TEST_WD_URL=http://localhost:5511 WEBUA_DEBUG=2 make test
     - docker logs server1
 
-    - docker run --name server2 -d -p 5512:9515 quay.io/wakaba/chromedriver:chromium /cd; sleep 10
+    - docker run --name server2 --net=host -d -p 5512:9515 quay.io/wakaba/chromedriver:chromium /cd; sleep 10
     - curl -f http://localhost:5512/status
     - cd perl-web-driver-client && TEST_WD_URL=http://localhost:5512 WEBUA_DEBUG=2 make test
     - docker logs server2
