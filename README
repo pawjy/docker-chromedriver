@@ -8,14 +8,21 @@ docker-chromedriver
 
 ... then access <http://localhost:9515/{path}>.
 
+Audio is exposed by RTP, with destination IP address 224.0.0.56 (or
+the address specified by -e WD_RTP_DEST=...) port 9515 (or the port
+specified by -e WD_RTP_PORT=...).
+
 * See also
 
-ChromeDriver <https://sites.google.com/a/chromium.org/chromedriver/>
-ChromeDriver <https://code.google.com/p/selenium/wiki/ChromeDriver>
-The WebDriver Wire Protocol
-<https://code.google.com/p/selenium/wiki/JsonWireProtocol>
+ChromeDriver <https://sites.google.com/a/chromium.org/chromedriver/>.
 
-Firefox: <https://github.com/wakaba/docker-firefoxdriver>
+ChromeDriver <https://code.google.com/p/selenium/wiki/ChromeDriver>.
+
+The WebDriver Wire Protocol
+<https://code.google.com/p/selenium/wiki/JsonWireProtocol>.
+
+Similar Docker image for Firefox:
+<https://github.com/wakaba/docker-firefoxdriver>.
 
 * Author
 
