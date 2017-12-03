@@ -18,7 +18,7 @@ test:
     - docker run --name server1 --net=host -d quay.io/wakaba/chromedriver:stable /cd
     - while [ ! curl -f http://localhost:9515/status ]; do sleep 1; done
     - cd perl-web-driver-client && TEST_WD_URL=http://localhost:9515 WEBUA_DEBUG=2 make test
-    - timeout 2 ffprobe -i rtp://224.0.0.56:9515 # or fail
+    - timeout 2 ffprobe rtp://224.0.0.56:9515 # or fail
     - docker logs server1
     - docker kill server1
 
