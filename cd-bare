@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo 'load-module module-rtp-send destination_ip=${WD_RTP_DEST:-224.0.0.56} port=${WD_RTP_PORT:-9515}' >> /etc/pulse/system.pa
+echo "load-module module-rtp-send destination_ip=${WD_RTP_DEST:-224.0.0.56} port=${WD_RTP_PORT:-9515}" >> /etc/pulse/system.pa
 pulseaudio --system &
 
 Xvfb :0 -screen 0 1024x768x24 &
