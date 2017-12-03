@@ -12,7 +12,7 @@ dependencies:
     - docker build -t quay.io/wakaba/chromedriver:chromium chromium
     - git clone https://github.com/manakai/perl-web-driver-client
     - cd perl-web-driver-client && make test-deps
-    - apt-get install -y ffmpeg
+    - sudo apt-get install -y ffmpeg
 test:
   override:
     - docker run --name server1 --net=host -d quay.io/wakaba/chromedriver:stable /cd
