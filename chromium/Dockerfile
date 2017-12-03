@@ -29,8 +29,7 @@ RUN sed -i 's/"$@"/"$@" --no-sandbox/' chrome-linux/chrome-wrapper && \
     ln -s /chrome-linux/chrome-wrapper /usr/bin/google-chrome
 
 RUN echo "#!/bin/bash" > /cd && \
-    echo 'Xvfb :0 -screen 0 1024x768x24 &' >> /cd && \
-    echo 'DISPLAY=:0 /chromedriver --whitelisted-ips 0.0.0.0/0' >> /cd && \
+    echo 'exec /cd-bare --whitelisted-ips 0.0.0.0/0' >> /cd && \
     chmod u+x /cd
 
 RUN echo "#!/bin/bash" > /cd-bare && \

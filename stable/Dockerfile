@@ -22,8 +22,7 @@ RUN wget https://noto-website-2.storage.googleapis.com/pkgs/NotoSansCJKjp-hinted
     rm NotoSansCJKjp-hinted.zip
 
 RUN echo "#!/bin/bash" > /cd && \
-    echo 'Xvfb :0 -screen 0 1024x768x24 &' >> /cd && \
-    echo 'DISPLAY=:0 /chromedriver --whitelisted-ips 0.0.0.0/0' >> /cd && \
+    echo 'exec /cd-bare --whitelisted-ips 0.0.0.0/0' >> /cd && \
     chmod u+x /cd
 
 RUN echo "#!/bin/bash" > /cd-bare && \
