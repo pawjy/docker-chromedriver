@@ -12,17 +12,20 @@ dependencies:
     - docker build -t quay.io/wakaba/chromedriver:chromium chromium
     - git clone https://github.com/manakai/perl-web-driver-client
     - cd perl-web-driver-client && make test-deps
+    - apt-get install -y ffmpeg
 test:
   override:
     - docker run --name server1 --net=host -d quay.io/wakaba/chromedriver:stable /cd
     - while [ ! curl -f http://localhost:9515/status ]; do sleep 1; done
     - cd perl-web-driver-client && TEST_WD_URL=http://localhost:9515 WEBUA_DEBUG=2 make test
+    - timeout 2 ffprobe -i rtp://224.0.0.56:9515 # or fail
     - docker logs server1
     - docker kill server1
 
-    - docker run --name server2 --net=host -d quay.io/wakaba/chromedriver:chromium /cd
+    - docker run --name server2 --net=host -d -e WD_RTP_PORT=5553 quay.io/wakaba/chromedriver:chromium /cd
     - while [ ! curl -f http://localhost:9515/status ]; do sleep 1; done
     - cd perl-web-driver-client && TEST_WD_URL=http://localhost:9515 WEBUA_DEBUG=2 make test
+    - timeout 2 ffprobe -i rtp://224.0.0.56:5553 # or fail
     - docker logs server2
     - docker kill server2
 
