@@ -6,8 +6,8 @@ dependencies:
     - git config --global user.email "temp@circleci.test"
     - git config --global user.name "CircleCI"
     - docker info
-    - docker build -t quay.io/wakaba/chromedriver:stable stable
-    - docker build -t quay.io/wakaba/chromedriver:chromium chromium
+    - cd stable && docker build -t quay.io/wakaba/chromedriver:stable .
+    - cd chromium && docker build -t quay.io/wakaba/chromedriver:chromium .
     - git clone https://github.com/manakai/perl-web-driver-client
     - cd perl-web-driver-client && make test-deps
 test:
