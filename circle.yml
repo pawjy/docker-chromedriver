@@ -17,17 +17,17 @@ dependencies:
     - docker build -t temp temp
 test:
   override:
-    - docker run --name server1 --net=host -d quay.io/wakaba/chromedriver:stable /cd
+    - docker run --name server1 -d quay.io/wakaba/chromedriver:stable /cd
     - while [ ! curl -f http://localhost:9515/status ]; do sleep 1; done
     - cd perl-web-driver-client && TEST_WD_URL=http://localhost:9515 WEBUA_DEBUG=2 make test
-    - docker run -i -t --net=host temp timeout 2 ffprobe rtp://224.0.0.56:9515 # or fail
+    - docker run -i -t temp timeout 2 ffprobe rtp://224.0.0.56:9515 # or fail
     - docker logs server1
     - docker kill server1
 
-    - docker run --name server2 --net=host -d -e WD_RTP_PORT=5553 quay.io/wakaba/chromedriver:chromium /cd
+    - docker run --name server2 -d -e WD_RTP_PORT=5553 quay.io/wakaba/chromedriver:chromium /cd
     - while [ ! curl -f http://localhost:9515/status ]; do sleep 1; done
     - cd perl-web-driver-client && TEST_WD_URL=http://localhost:9515 WEBUA_DEBUG=2 make test
-    - docker run -i -t --net=host temp timeout 2 ffprobe rtp://224.0.0.56:5553 # or fail
+    - docker run -i -t temp timeout 2 ffprobe rtp://224.0.0.56:5553 # or fail
     - docker logs server2
     - docker kill server2
 
