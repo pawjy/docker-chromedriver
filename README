@@ -9,8 +9,9 @@ docker-chromedriver
 ... then access <http://localhost:9515/{path}>.
 
 Audio is exposed by RTP, with destination IP address 224.0.0.56 (or
-the address specified by -e WD_RTP_DEST=...) port 9515 (or the port
-specified by -e WD_RTP_PORT=...).
+the address specified by |-e WD_RTP_DEST=/.../|) and the port
+specified by |-e WD_RTP_PORT=/.../|, if the |WD_RTP_PORT| environment
+variable is given.
 
 * See also
 
