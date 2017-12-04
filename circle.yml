@@ -12,17 +12,24 @@ dependencies:
     - docker build -t quay.io/wakaba/chromedriver:chromium chromium
     - git clone https://github.com/manakai/perl-web-driver-client
     - cd perl-web-driver-client && make test-deps
+
+    - ip route | awk '/docker0/ { print $NF }' > docker0-ip.txt; cat docker0-ip.txt
+
+    - mkdir temp; echo 'FROM debian:sid' > temp/Dockerfile; echo 'RUN apt-get update && apt-get install -y ffmpeg' >> temp/Dockerfile
+    - docker build -t temp temp
 test:
   override:
-    - docker run --name server1 --net=host -d quay.io/wakaba/chromedriver:stable /cd
-    - while [ ! curl -f http://localhost:9515/status ]; do sleep 1; done
-    - cd perl-web-driver-client && TEST_WD_URL=http://localhost:9515 WEBUA_DEBUG=2 make test
+    - docker run --name server1 -d -p 9515:9515 --add-host=dockerhost:`cat docker0-ip.txt` quay.io/wakaba/chromedriver:stable /cd
+    - while ! curl -f http://localhost:9515/status ; do sleep 1; done
+    - cd perl-web-driver-client && TEST_WD_URL=http://localhost:9515 WEBUA_DEBUG=2 TEST_SERVER_LISTEN_HOST=0.0.0.0 TEST_SERVER_HOSTNAME=dockerhost make test
+    - docker run -i -t temp timeout 2 ffprobe rtp://224.0.0.56:9515 # or fail
     - docker logs server1
     - docker kill server1
 
-    - docker run --name server2 --net=host -d quay.io/wakaba/chromedriver:chromium /cd
-    - while [ ! curl -f http://localhost:9515/status ]; do sleep 1; done
-    - cd perl-web-driver-client && TEST_WD_URL=http://localhost:9515 WEBUA_DEBUG=2 make test
+    - docker run --name server2 -d -p 9515:9515 --add-host=dockerhost:`cat docker0-ip.txt` -e WD_RTP_PORT=5553 quay.io/wakaba/chromedriver:chromium /cd
+    - while ! curl -f http://localhost:9515/status ; do sleep 1; done
+    - cd perl-web-driver-client && TEST_WD_URL=http://localhost:9515 WEBUA_DEBUG=2 TEST_SERVER_LISTEN_HOST=0.0.0.0 TEST_SERVER_HOSTNAME=dockerhost make test
+    - docker run -i -t temp timeout 2 ffprobe rtp://224.0.0.56:5553 # or fail
     - docker logs server2
     - docker kill server2
 
