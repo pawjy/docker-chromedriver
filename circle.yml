@@ -1,52 +1,61 @@
-machine:
-  services:
-    - docker
-dependencies:
-  override:
-    - git config --global user.email "temp@circleci.test"
-    - git config --global user.name "CircleCI"
-    - docker info
-    - cp cd-bare stable/
-    - cp cd-bare chromium/
-    - docker build -t quay.io/wakaba/chromedriver:stable stable
-    - docker build -t quay.io/wakaba/chromedriver:chromium chromium
-    - git clone https://github.com/manakai/perl-web-driver-client
-    - cd perl-web-driver-client && make test-deps
-
-    - ip route | awk '/docker0/ { print $NF }' > docker0-ip.txt; cat docker0-ip.txt
-
-    - mkdir temp; echo 'FROM debian:sid' > temp/Dockerfile; echo 'RUN apt-get update && apt-get install -y ffmpeg' >> temp/Dockerfile
-    - docker build -t temp temp
-test:
-  override:
-    - docker run --name server1 -d -p 9515:9515 --add-host=dockerhost:`cat docker0-ip.txt` quay.io/wakaba/chromedriver:stable /cd
-    - while ! curl -f http://localhost:9515/status ; do sleep 1; done
-    - cd perl-web-driver-client && TEST_WD_URL=http://localhost:9515 WEBUA_DEBUG=2 TEST_SERVER_LISTEN_HOST=0.0.0.0 TEST_SERVER_HOSTNAME=dockerhost make test
-    - "! docker run -i -t temp timeout 2 ffprobe rtp://224.0.0.56:9515 # or fail"
-    - docker logs server1
-    - docker kill server1
-
-    - docker run --name server2 -d -p 9515:9515 --add-host=dockerhost:`cat docker0-ip.txt` -e WD_RTP_PORT=5553 quay.io/wakaba/chromedriver:chromium /cd
-    - while ! curl -f http://localhost:9515/status ; do sleep 1; done
-    - cd perl-web-driver-client && TEST_WD_URL=http://localhost:9515 WEBUA_DEBUG=2 TEST_SERVER_LISTEN_HOST=0.0.0.0 TEST_SERVER_HOSTNAME=dockerhost make test
-    - docker run -i -t temp timeout 2 ffprobe rtp://224.0.0.56:5553 # or fail
-    - docker logs server2
-    - docker kill server2
-
-deployment:
-  docker:
-    branch: master
-    commands:
-      - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS quay.io
-      - docker push quay.io/wakaba/chromedriver:stable
-      - docker push quay.io/wakaba/chromedriver:chromium
-
-  nightly:
-    branch: nightly
-    commands:
-      - curl -f -s -S --request POST --header "Authorization:token $GITHUB_ACCESS_TOKEN" --header "Content-Type:application/json" --data-binary "{\"base\":\"master\",\"head\":\"`git rev-parse HEAD`\",\"commit_message\":\"auto-merge nightly into master\"}" "https://api.github.com/repos/wakaba/docker-chromedriver/merges"
-
-  staging:
-    branch: staging
-    commands:
-      - curl -f -s -S --request POST --header "Authorization:token $GITHUB_ACCESS_TOKEN" --header "Content-Type:application/json" --data-binary "{\"base\":\"master\",\"head\":\"`git rev-parse HEAD`\",\"commit_message\":\"auto-merge staging into master\"}" "https://api.github.com/repos/wakaba/docker-chromedriver/merges"
+{
+   "dependencies" : {
+      "override" : [
+         "cp cd-bare stable/",
+         "cp cd-bare chromium/",
+         "git clone https://github.com/manakai/perl-web-driver-client",
+         "cd perl-web-driver-client && make test-deps",
+         "ip route | awk '/docker0/ { print $NF }' > docker0-ip.txt; cat docker0-ip.txt",
+         "mkdir temp; echo 'FROM debian:sid' > temp/Dockerfile; echo 'RUN apt-get update && apt-get install -y ffmpeg' >> temp/Dockerfile",
+         "docker build -t temp temp",
+         "docker info",
+         "docker build -t quay.io/wakaba/chromedriver:stable stable",
+         "docker build -t quay.io/wakaba/chromedriver:chromium chromium"
+      ]
+   },
+   "deployment" : {
+      "master" : {
+         "branch" : "master",
+         "commands" : [
+            "docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS quay.io",
+            "docker push quay.io/wakaba/chromedriver:stable && curl -sSLf $BWALL_URL -X POST",
+            "docker push quay.io/wakaba/chromedriver:chromium && curl -sSLf $BWALL_URL.chromium -X POST"
+         ]
+      },
+      "nightly" : {
+         "branch" : "nightly",
+         "commands" : [
+            "git rev-parse HEAD > head.txt",
+            "curl -f -s -S --request POST --header \u0022Authorization:token $GITHUB_ACCESS_TOKEN\u0022 --header \u0022Content-Type:application/json\u0022 --data-binary \u0022{\u005C\u0022base\u005C\u0022:\u005C\u0022master\u005C\u0022,\u005C\u0022head\u005C\u0022:\u005C\u0022`cat head.txt`\u005C\u0022,\u005C\u0022commit_message\u005C\u0022:\u005C\u0022auto-merge $CIRCLE_BRANCH into master\u005C\u0022}\u0022 \u0022https://api.github.com/repos/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/merges\u0022"
+         ]
+      },
+      "staging" : {
+         "branch" : "staging",
+         "commands" : [
+            "git rev-parse HEAD > head.txt",
+            "curl -f -s -S --request POST --header \u0022Authorization:token $GITHUB_ACCESS_TOKEN\u0022 --header \u0022Content-Type:application/json\u0022 --data-binary \u0022{\u005C\u0022base\u005C\u0022:\u005C\u0022master\u005C\u0022,\u005C\u0022head\u005C\u0022:\u005C\u0022`cat head.txt`\u005C\u0022,\u005C\u0022commit_message\u005C\u0022:\u005C\u0022auto-merge $CIRCLE_BRANCH into master\u005C\u0022}\u0022 \u0022https://api.github.com/repos/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME/merges\u0022"
+         ]
+      }
+   },
+   "machine" : {
+      "services" : [
+         "docker"
+      ]
+   },
+   "test" : {
+      "override" : [
+         "docker run --name server1 -d -p 9515:9515 --add-host=dockerhost:`cat docker0-ip.txt` quay.io/wakaba/chromedriver:stable /cd",
+         "while ! curl -f http://localhost:9515/status ; do sleep 1; done",
+         "cd perl-web-driver-client && TEST_WD_URL=http://localhost:9515 WEBUA_DEBUG=2 TEST_SERVER_LISTEN_HOST=0.0.0.0 TEST_SERVER_HOSTNAME=dockerhost make test",
+         "! docker run -i -t temp timeout 2 ffprobe rtp://224.0.0.56:9515 # or fail",
+         "docker logs server1",
+         "docker kill server1",
+         "docker run --name server2 -d -p 9515:9515 --add-host=dockerhost:`cat docker0-ip.txt` -e WD_RTP_PORT=5553 quay.io/wakaba/chromedriver:chromium /cd",
+         "while ! curl -f http://localhost:9515/status ; do sleep 1; done",
+         "cd perl-web-driver-client && TEST_WD_URL=http://localhost:9515 WEBUA_DEBUG=2 TEST_SERVER_LISTEN_HOST=0.0.0.0 TEST_SERVER_HOSTNAME=dockerhost make test",
+         "docker run -i -t temp timeout 2 ffprobe rtp://224.0.0.56:5553 # or fail",
+         "docker logs server2",
+         "docker kill server2"
+      ]
+   }
+}
