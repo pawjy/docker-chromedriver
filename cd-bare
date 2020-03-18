@@ -2,7 +2,31 @@
 
 if [ -n "$WD_RTP_PORT" ]; then
   echo "load-module module-rtp-send destination_ip=${WD_RTP_DEST:-224.0.0.56} port=${WD_RTP_PORT:-9515}" >> /etc/pulse/system.pa
+  echo "start pulseaudio..."
   pulseaudio --system &
+elif [ -n "$WD_VIDEO_PATH" ]; then
+  echo "start pulseaudio..."
+  pulseaudio --system &
+  bash -c 'sleep 10 && ffmpeg -y \
+      -f pulse -ac 2 -i default \
+      -f x11grab -video_size 1024x768 -draw_mouse 0 -i :0 -codec:v libx264rgb \
+      -r 30 \
+      -codec:a aac \
+      $WD_VIDEO_PATH
+  ' &
+elif [ -n "$WD_HLS_PATH" ]; then
+  echo "start pulseaudio..."
+  pulseaudio --system &
+  bash -c 'sleep 10 && ffmpeg -y \
+      -f pulse -ac 2 -i default \
+      -f x11grab -video_size 1024x768 -draw_mouse 0 -i :0 -codec:v libx264rgb \
+      -r 30 \
+      -codec:a aac \
+      -f hls -hls_start_number_source 1 \
+      -hls_flags split_by_time+delete_segments+discont_start \
+      -hls_time 2 -hls_list_size 100 \
+      $WD_HLS_PATH
+  ' &
 fi
 
 Xvfb :0 -screen 0 1024x768x24 &
