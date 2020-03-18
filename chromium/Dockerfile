@@ -7,15 +7,16 @@ RUN apt-get update && \
 
 RUN ln -s /lib/x86_64-linux-gnu/libudev.so.1 /lib/x86_64-linux-gnu/libudev.so.0
 
-RUN wget -O /tmp/chromedriver-version https://www.googleapis.com/download/storage/v1/b/chromium-browser-snapshots/o/Linux_x64%2FLAST_CHANGE?alt=media && \
-    wget -O chromium.zip https://www.googleapis.com/download/storage/v1/b/chromium-browser-snapshots/o/Linux_x64%2F`cat /tmp/chromedriver-version`%2Fchrome-linux.zip?alt=media && \
-    wget -O chromedriver_linux64.zip https://www.googleapis.com/download/storage/v1/b/chromium-browser-snapshots/o/Linux_x64%2F`cat /tmp/chromedriver-version`%2Fchromedriver_linux64.zip?alt=media && \
+RUN wget -O /tmp/chrome-version https://www.googleapis.com/download/storage/v1/b/chromium-browser-snapshots/o/Linux_x64%2FLAST_CHANGE?alt=media && \
+    wget -O chromium.zip https://www.googleapis.com/download/storage/v1/b/chromium-browser-snapshots/o/Linux_x64%2F`cat /tmp/chrome-version`%2Fchrome-linux.zip?alt=media && \
+    wget -O chromedriver_linux64.zip https://www.googleapis.com/download/storage/v1/b/chromium-browser-snapshots/o/Linux_x64%2F`cat /tmp/chrome-version`%2Fchromedriver_linux64.zip?alt=media && \
     unzip chromium.zip && \
     mv chrome-linux/chrome_sandbox chrome-linux/chrome-sandbox && \
     chown root.root chrome-linux/chrome-sandbox && \
     chmod 4755 chrome-linux/chrome-sandbox && \
     unzip chromedriver_linux64.zip && \
-    rm chromium.zip chromedriver_linux64.zip /tmp/chromedriver-version
+    mv chromedriver_linux64/chromedriver / && \
+    rm chromium.zip chromedriver_linux64.zip /tmp/chrome-version
 
 RUN wget https://noto-website-2.storage.googleapis.com/pkgs/NotoSansCJKjp-hinted.zip && \
     unzip NotoSansCJKjp-hinted.zip && \
