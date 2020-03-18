@@ -11,8 +11,8 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/* google-chrome-stable_current_amd64.deb && \
     gpasswd -a root pulse-access
 
-RUN wget -O /tmp/chromedriver-version http://chromedriver.storage.googleapis.com/LATEST_RELEASE && \
-    wget http://chromedriver.storage.googleapis.com/`cat /tmp/chromedriver-version`/chromedriver_linux64.zip && \
+RUN wget -O /tmp/chromedriver-version https://chromedriver.storage.googleapis.com/LATEST_RELEASE && \
+    wget https://chromedriver.storage.googleapis.com/`cat /tmp/chromedriver-version`/chromedriver_linux64.zip && \
     unzip chromedriver_linux64.zip && \
     rm /tmp/chromedriver-version chromedriver_linux64.zip
 

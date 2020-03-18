@@ -14,8 +14,8 @@ RUN wget -O chromium.zip https://download-chromium.appspot.com/dl/Linux_x64 && \
     chmod 4755 chrome-linux/chrome-sandbox && \
     rm chromium.zip
 
-RUN wget -O /tmp/chromedriver-version http://chromedriver.storage.googleapis.com/LATEST_RELEASE && \
-    wget http://chromedriver.storage.googleapis.com/`cat /tmp/chromedriver-version`/chromedriver_linux64.zip && \
+RUN wget -O /tmp/chromedriver-version https://www.googleapis.com/download/storage/v1/b/chromium-browser-snapshots/o/Linux_x64%2FLAST_CHANGE?alt=media && \
+    wget -O chromedriver_linux64.zip https://www.googleapis.com/download/storage/v1/b/chromium-browser-snapshots/o/Linux_x64%2F`cat /tmp/chromedriver-version`%2Fchromedriver_linux64.zip?alt=media && \
     unzip chromedriver_linux64.zip && \
     rm chromedriver_linux64.zip /tmp/chromedriver-version
 
