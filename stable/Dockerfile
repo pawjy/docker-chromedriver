@@ -1,9 +1,8 @@
 FROM debian:sid
 
-ADD cd-bare /cd-bare
-
 RUN apt-get update && \
     apt-get -y install libglib2.0 libnss3-dev libxtst6 libxss1 libgconf-2-4 libfontconfig1 libpango1.0-0 libxcursor1 libxcomposite1 libasound2 libxdamage1 libxrandr2 libcups2 libgtk-3-0 wget unzip xvfb fonts-noto fonts-liberation libexif12 pulseaudio \
+        ffmpeg \
         libappindicator3-1 libcurl4 xdg-utils lsb-release && \
     wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && \
     dpkg -i google-chrome-stable_current_amd64.deb && \
@@ -27,5 +26,7 @@ RUN wget https://noto-website-2.storage.googleapis.com/pkgs/NotoSansCJKjp-hinted
 RUN echo "#!/bin/bash" > /cd && \
     echo 'exec /cd-bare --whitelisted-ips 0.0.0.0/0' >> /cd && \
     chmod u+x /cd
+
+ADD cd-bare /cd-bare
 
 CMD ["/cd"]
