@@ -9,7 +9,9 @@ RUN apt-get update && \
     apt-get -f -y install && \
     sed -i 's/"$@"/"$@" --no-sandbox/' /opt/google/chrome/google-chrome && \
     rm -rf /var/lib/apt/lists/* google-chrome-stable_current_amd64.deb && \
-    gpasswd -a root pulse-access
+    gpasswd -a root pulse-access && \
+    cp /etc/pulse/system.pa /etc/pulse/system.pa.orig && \
+    grep -v module-suspend-on-idle /etc/pulse/system.pa.orig > /etc/pulse/system.pa
 
 RUN wget -O /tmp/chromedriver-version https://chromedriver.storage.googleapis.com/LATEST_RELEASE && \
     wget https://chromedriver.storage.googleapis.com/`cat /tmp/chromedriver-version`/chromedriver_linux64.zip && \
