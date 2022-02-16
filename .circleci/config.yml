@@ -176,6 +176,39 @@
                }
             }
          ]
+      },
+      "gaa4" : {
+         "machine" : {
+            "image" : "ubuntu-2004:202101-01"
+         },
+         "steps" : [
+            "checkout",
+            {
+               "run" : {
+                  "command" : "git config --global user.email \u0022temp@circleci.test\u0022;git config --global user.name \u0022CircleCI\u0022"
+               }
+            },
+            {
+               "run" : {
+                  "command" : "make deps"
+               }
+            },
+            {
+               "run" : {
+                  "command" : "make updatenightly"
+               }
+            },
+            {
+               "deploy" : {
+                  "command" : "git diff-index --quiet HEAD --cached || git commit -m auto"
+               }
+            },
+            {
+               "deploy" : {
+                  "command" : "git push origin \u002B`git rev-parse HEAD`:refs/heads/nightly"
+               }
+            }
+         ]
       }
    },
    "version" : 2,
@@ -215,6 +248,25 @@
                   "requires" : [
                      "build"
                   ]
+               }
+            }
+         ]
+      },
+      "gaa4" : {
+         "jobs" : [
+            "gaa4"
+         ],
+         "triggers" : [
+            {
+               "schedule" : {
+                  "cron" : "43 18 * * *",
+                  "filters" : {
+                     "branches" : {
+                        "only" : [
+                           "master"
+                        ]
+                     }
+                  }
                }
             }
          ]
