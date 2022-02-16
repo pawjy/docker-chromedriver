@@ -1,9 +1,9 @@
-FROM debian:sid
+FROM quay.io/wakaba/base:stable
 
 RUN apt-get update && \
     apt-get -y install libglib2.0 libnss3-dev libxtst6 libxss1 libgconf-2-4 libfontconfig1 libpango1.0-0 libxcursor1 libxcomposite1 libasound2 libxdamage1 libxrandr2 libcups2 libgtk-3-0 wget unzip xvfb fonts-noto fonts-liberation libexif12 pulseaudio \
         ffmpeg libgbm1 \
-        libappindicator3-1 libcurl4 xdg-utils lsb-release && \
+        libcurl4 xdg-utils lsb-release && \
     wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && \
     dpkg -i google-chrome-stable_current_amd64.deb && \
     apt-get -f -y install && \
