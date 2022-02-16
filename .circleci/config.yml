@@ -36,7 +36,7 @@
             },
             {
                "run" : {
-                  "command" : "docker run -it -d debian bash"
+                  "command" : "docker run -it -d quay.io/wakaba/base:stable bash"
                }
             },
             {
@@ -46,7 +46,7 @@
             },
             {
                "run" : {
-                  "command" : "mkdir temp; echo 'FROM debian:sid' > temp/Dockerfile; echo 'RUN apt-get update && apt-get install -y ffmpeg' >> temp/Dockerfile"
+                  "command" : "mkdir temp; echo 'FROM quay.io/wakaba/base:stable' > temp/Dockerfile; echo 'RUN apt-get update && apt-get install -y ffmpeg' >> temp/Dockerfile"
                }
             },
             {
@@ -259,7 +259,7 @@
          "triggers" : [
             {
                "schedule" : {
-                  "cron" : "43 18 * * *",
+                  "cron" : "19 19 * * *",
                   "filters" : {
                      "branches" : {
                         "only" : [
