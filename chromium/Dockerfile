@@ -31,7 +31,7 @@ RUN sed -i 's/"$@"/"$@" --no-sandbox/' chrome-linux/chrome-wrapper && \
     ln -s /chrome-linux/chrome-wrapper /usr/bin/google-chrome
 
 RUN echo "#!/bin/bash" > /cd && \
-    echo 'exec /cd-bare --whitelisted-ips 0.0.0.0/0' >> /cd && \
+    echo 'exec /cd-bare --whitelisted-ips 0.0.0.0/0 --allowed-origins=*' >> /cd && \
     chmod u+x /cd
 
 ADD cd-bare /cd-bare
