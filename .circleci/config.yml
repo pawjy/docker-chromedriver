@@ -213,9 +213,31 @@
    },
    "version" : 2,
    "workflows" : {
+      "autobuild" : {
+         "jobs" : [
+            "build"
+         ],
+         "triggers" : [
+            {
+               "schedule" : {
+                  "cron" : "42 7 * * *",
+                  "filters" : {
+                     "branches" : {
+                        "only" : [
+                           "master"
+                        ]
+                     }
+                  }
+               }
+            }
+         ]
+      },
       "build" : {
          "jobs" : [
-            "build",
+            {
+               "build" : {
+               }
+            },
             {
                "deploy_nightly" : {
                   "context" : [
@@ -259,7 +281,7 @@
          "triggers" : [
             {
                "schedule" : {
-                  "cron" : "19 19 * * *",
+                  "cron" : "42 19 * * *",
                   "filters" : {
                      "branches" : {
                         "only" : [

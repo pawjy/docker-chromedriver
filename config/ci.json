@@ -33,6 +33,7 @@
       "docker kill server2"
     ],
     "merger": true,
-    "gaa": true
+    "gaa": true,
+    "autobuild": true
   }
 }
