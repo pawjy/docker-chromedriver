@@ -15,7 +15,8 @@ test-circleci:
 	git clone https://github.com/manakai/perl-web-driver-client
 	cd perl-web-driver-client && make test-deps
 
-	docker run -it -d quay.io/wakaba/base:stable bash
+	docker run -d -it quay.io/wakaba/base:stable bash
+	sleep 10
 	ip route | awk '/docker0/ { print $NF }' > docker0-ip.txt
 	cat docker0-ip.txt
 
