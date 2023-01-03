@@ -252,7 +252,25 @@
    "workflows" : {
       "autobuild" : {
          "jobs" : [
-            "build"
+            "build",
+            {
+               "test" : {
+                  "requires" : [
+                     "build"
+                  ]
+               }
+            },
+            {
+               "deploy_master" : {
+                  "context" : [
+                     "deploy-context"
+                  ],
+                  "requires" : [
+                     "build",
+                     "test"
+                  ]
+               }
+            }
          ],
          "triggers" : [
             {
