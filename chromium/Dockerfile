@@ -1,7 +1,8 @@
 FROM quay.io/wakaba/base:stable
 
 RUN apt-get update && \
-    apt-get -y install libglib2.0 libnss3-dev libxtst6 libxss1 libgconf-2-4 libfontconfig1 libpango1.0-0 libxcursor1 libxcomposite1 libasound2 libxdamage1 libxrandr2 libcups2 libgtk-3-0 wget unzip xvfb fonts-noto fonts-liberation libexif12 pulseaudio ffmpeg libgbm1 && \
+    apt-get -y install libglib2.0 libnss3-dev libxtst6 libxss1 libgconf-2-4 libfontconfig1 libpango1.0-0 libxcursor1 libxcomposite1 libasound2 libxdamage1 libxrandr2 libcups2 libgtk-3-0 wget unzip xvfb fonts-noto fonts-liberation libexif12 pulseaudio \
+        ffmpeg libgbm1 libu2f-udev && \
     rm -rf /var/lib/apt/lists/* && \
     gpasswd -a root pulse-access && \
     cp /etc/pulse/system.pa /etc/pulse/system.pa.orig && \
