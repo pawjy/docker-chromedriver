@@ -1,14 +1,14 @@
 {
-  "circleci": {
-    "docker-build": [
-      {"name": "quay.io/wakaba/chromedriver:stable", "path": "stable"},
-      {"name": "quay.io/wakaba/chromedriver:chromium", "path": "chromium"}
-    ],
+  "github": {
     "build": [
-      "make deps-circleci"
+      "make deps-circleci",
+      {"docker_build": "quay.io/wakaba/chromedriver:stable", "path": "stable"},
+      {"docker_build": "quay.io/wakaba/chromedriver:chromium", "path": "chromium"}
     ],
     "tests": [
-      "make test-circleci"
+      "make test-circleci",
+      {"docker_push": "quay.io/wakaba/chromedriver:stable"},
+      {"docker_push": "quay.io/wakaba/chromedriver:chromium"}
     ],
     "merger": true,
     "gaa": true,
