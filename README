@@ -23,7 +23,7 @@ The WebDriver Wire Protocol
 <https://code.google.com/p/selenium/wiki/JsonWireProtocol>.
 
 Similar Docker image for Firefox:
-<https://github.com/wakaba/docker-firefoxdriver>.
+<https://github.com/pawjy/docker-firefoxdriver>.
 
 * Author
 
@@ -34,3 +34,9 @@ Wakaba <wakaba@suikawiki.org>.
 * Acknowledgements
 
 Thanks to Hatena <http://hatenacorp.jp/>.
+
+* History
+
+The Git repository was at
+<https://github.com/wakaba/docker-chromedriver> until 19 November
+2023.
