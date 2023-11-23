@@ -9,7 +9,7 @@ RUN apt-get update && \
     cp /etc/pulse/system.pa /etc/pulse/system.pa.orig && \
     grep -v module-suspend-on-idle /etc/pulse/system.pa.orig > /etc/pulse/system.pa
 
-RUN curl -f https://googlechromelabs.github.io/chrome-for-testing/last-known-good-versions-with-downloads.json > /tmp/chrome.json \
+RUN curl -f https://googlechromelabs.github.io/chrome-for-testing/last-known-good-versions-with-downloads.json > /tmp/chrome.json && \
     curl -f `jq -r '.channels.Stable.downloads.chrome[] | select(.platform == "linux64").url' /tmp/chrome.json` > chrome.zip && \
     curl -f `jq -r '.channels.Stable.downloads.chrome[] | select(.platform == "linux64").url' /tmp/chrome.json` > chromedriver.zip && \
     unzip /tmp/chrome.zip && \
