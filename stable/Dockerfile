@@ -17,8 +17,8 @@ RUN curl -f https://googlechromelabs.github.io/chrome-for-testing/last-known-goo
     sed -i 's/"$@"/"$@" --no-sandbox/' /chrome/chrome-wrapper && \
     ln -s /chrome/chrome-wrapper /usr/bin/google-chrome && \
     unzip /tmp/chromedriver.zip && \
-    mv chromedriver-linux64 /chromedriver && \
-    rm -f /tmp/chrome*
+    mv chromedriver-linux64/chromedriver /chromedriver && \
+    rm -fr /tmp/chrome* chromedriver-linux64
 
 RUN curl -f https://noto-website-2.storage.googleapis.com/pkgs/NotoSansCJKjp-hinted.zip > /tmp/NotoSansCJKjp-hinted.zip && \
     mkdir -p usr/share/fonts/truetype/noto && \
