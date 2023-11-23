@@ -11,7 +11,7 @@ RUN apt-get update && \
 
 RUN curl -f https://googlechromelabs.github.io/chrome-for-testing/last-known-good-versions-with-downloads.json > /tmp/chrome.json && \
     curl -f `jq -r '.channels.Stable.downloads.chrome[] | select(.platform == "linux64").url' /tmp/chrome.json` > /tmp/chrome.zip && \
-    curl -f `jq -r '.channels.Stable.downloads.chrome[] | select(.platform == "linux64").url' /tmp/chrome.json` > /tmp/chromedriver.zip && \
+    curl -f `jq -r '.channels.Stable.downloads.chromedriver[] | select(.platform == "linux64").url' /tmp/chrome.json` > /tmp/chromedriver.zip && \
     unzip /tmp/chrome.zip && \
     mv chrome-linux64 /chrome && \
     sed -i 's/"$@"/"$@" --no-sandbox/' /chrome/chrome-wrapper && \
