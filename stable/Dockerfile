@@ -10,8 +10,8 @@ RUN apt-get update && \
     grep -v module-suspend-on-idle /etc/pulse/system.pa.orig > /etc/pulse/system.pa
 
 RUN curl -f https://googlechromelabs.github.io/chrome-for-testing/last-known-good-versions-with-downloads.json > /tmp/chrome.json && \
-    curl -f `jq -r '.channels.Stable.downloads.chrome[] | select(.platform == "linux64").url' /tmp/chrome.json` > chrome.zip && \
-    curl -f `jq -r '.channels.Stable.downloads.chrome[] | select(.platform == "linux64").url' /tmp/chrome.json` > chromedriver.zip && \
+    curl -f `jq -r '.channels.Stable.downloads.chrome[] | select(.platform == "linux64").url' /tmp/chrome.json` > /tmp/chrome.zip && \
+    curl -f `jq -r '.channels.Stable.downloads.chrome[] | select(.platform == "linux64").url' /tmp/chrome.json` > /tmp/chromedriver.zip && \
     unzip /tmp/chrome.zip && \
     mv chrome-linux64 /chrome && \
     sed -i 's/"$@"/"$@" --no-sandbox/' /chrome/chrome-wrapper && \
