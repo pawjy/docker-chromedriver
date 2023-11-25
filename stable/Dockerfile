@@ -13,9 +13,8 @@ RUN curl -f https://googlechromelabs.github.io/chrome-for-testing/last-known-goo
     curl -f `jq -r '.channels.Stable.downloads.chrome[] | select(.platform == "linux64").url' /tmp/chrome.json` > /tmp/chrome.zip && \
     curl -f `jq -r '.channels.Stable.downloads.chromedriver[] | select(.platform == "linux64").url' /tmp/chrome.json` > /tmp/chromedriver.zip && \
     unzip /tmp/chrome.zip && \
-    mv chrome-linux64 /chrome && \
-    sed -i 's/"$@"/"$@" --no-sandbox/' /chrome/chrome-wrapper && \
-    ln -s /chrome/chrome-wrapper /usr/bin/google-chrome && \
+    sed -i 's/"$@"/"$@" --no-sandbox/' /chrome-linux64/chrome-wrapper && \
+    ln -s /chrome-linux64/chrome-wrapper /usr/bin/google-chrome && \
     unzip /tmp/chromedriver.zip && \
     mv chromedriver-linux64/chromedriver /chromedriver && \
     rm -fr /tmp/chrome* chromedriver-linux64
