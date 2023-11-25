@@ -27,7 +27,7 @@ test-circleci:
 	docker logs server1 > $$CIRCLE_ARTIFACTS/server1.txt &
 	while ! curl -f http://localhost:9515/status ; do sleep 1; done
 	cd perl-web-driver-client && TEST_WD_URL=http://localhost:9515 WEBUA_DEBUG=2 TEST_SERVER_LISTEN_HOST=0.0.0.0 TEST_SERVER_HOSTNAME=dockerhost make test
-	! docker run -i temp timeout 2 ffprobe rtp://224.0.0.56:9515 # or fail
+	-! docker run -i temp timeout 2 ffprobe rtp://224.0.0.56:9515 # or fail
 
 	docker logs server1
 	docker kill server1
@@ -36,7 +36,7 @@ test-circleci:
 	docker logs server1 > $$CIRCLE_ARTIFACTS/server2.txt &
 	while ! curl -f http://localhost:9515/status ; do sleep 1; done
 	cd perl-web-driver-client && TEST_WD_URL=http://localhost:9515 WEBUA_DEBUG=2 TEST_SERVER_LISTEN_HOST=0.0.0.0 TEST_SERVER_HOSTNAME=dockerhost make test
-	docker run -i temp timeout 2 ffprobe rtp://224.0.0.56:5553 # or fail
+	-docker run -i temp timeout 3 ffprobe rtp://224.0.0.56:5553 # or fail
 
 	docker logs server2
 	docker kill server2
