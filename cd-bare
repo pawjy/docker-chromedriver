@@ -44,4 +44,5 @@ if ! $has_portarg; then
   portarg=--port=9515
 fi
 
+echo /chromedriver $portarg "$@"
 DISPLAY=:0 /chromedriver $portarg "$@"
