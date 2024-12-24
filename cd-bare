@@ -31,4 +31,17 @@ fi
 
 Xvfb :0 -screen 0 1024x768x24 &
 
-DISPLAY=:0 /chromedriver "$@"
+has_portarg=
+for arg in "$@"; do
+  if [[ $arg == --port=* ]]; then
+    has_portarg=true
+    break
+  fi
+done
+
+portarg=
+if ! $has_portarg; then
+  portarg=--port=9515
+fi
+
+DISPLAY=:0 /chromedriver $portarg "$@"
