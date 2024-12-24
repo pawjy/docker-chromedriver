@@ -31,7 +31,7 @@ fi
 
 Xvfb :0 -screen 0 1024x768x24 &
 
-has_portarg=
+has_portarg=false
 for arg in "$@"; do
   if [[ $arg == --port=* ]]; then
     has_portarg=true
