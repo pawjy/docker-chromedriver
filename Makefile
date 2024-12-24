@@ -25,7 +25,7 @@ test-circleci:
 
 	docker run --name server1 -d -p 9515:9515 --add-host=dockerhost:`cat docker0-ip.txt` quay.io/wakaba/chromedriver:stable /cd
 	docker logs server1 > $$CIRCLE_ARTIFACTS/server1.txt &
-	while ! curl -f http://localhost:9515/status ; do sleep 1; done
+	while ! curl -f http://localhost:9515/status ; do cat $$CIRCLE_ARTIFACTS/server1.txt; sleep 1; done
 	cd perl-web-driver-client && TEST_WD_URL=http://localhost:9515 WEBUA_DEBUG=2 TEST_SERVER_LISTEN_HOST=0.0.0.0 TEST_SERVER_HOSTNAME=dockerhost make test
 	-! docker run -i temp timeout 2 ffprobe rtp://224.0.0.56:9515 # or fail
 
