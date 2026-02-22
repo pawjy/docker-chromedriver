@@ -1,8 +1,10 @@
 FROM quay.io/wakaba/base:stable
 
 RUN apt-get update && \
-    apt-get -y install libglib2.0 libnss3-dev libxtst6 libxss1 libfontconfig1 libpango-1.0-0 libxcursor1 libxcomposite1 libasound2 libxdamage1 libxrandr2 libcups2 libgtk-3-0 wget unzip xvfb fonts-noto fonts-liberation libexif12 pulseaudio \
-        ffmpeg libgbm1 libu2f-udev libgbm-dev libglx-mesa0 libgl1 libegl1 libnss3 && \
+    apt-get -y install libglib2.0 libnss3-dev libxtst6 libxss1 libfontconfig1 libpango-1.0-0 libxcursor1 libxcomposite1 libasound2 libxdamage1 libxrandr2 libcups2 libgtk-3-0 wget unzip xvfb \
+    fonts-noto fonts-liberation fonts-noto-cjk \
+    libexif12 pulseaudio \
+    ffmpeg libgbm1 libu2f-udev libgbm-dev libglx-mesa0 libgl1 libegl1 libnss3 && \
     rm -rf /var/lib/apt/lists/* && \
     gpasswd -a root pulse-access && \
     cp /etc/pulse/system.pa /etc/pulse/system.pa.orig && \
@@ -20,13 +22,6 @@ RUN wget -O /tmp/chrome-version https://www.googleapis.com/download/storage/v1/b
     unzip chromedriver_linux64.zip && \
     mv chromedriver_linux64/chromedriver / && \
     rm chromium.zip chromedriver_linux64.zip /tmp/chrome-version
-
-RUN wget https://noto-website-2.storage.googleapis.com/pkgs/NotoSansCJKjp-hinted.zip && \
-    unzip NotoSansCJKjp-hinted.zip && \
-    mkdir -p usr/share/fonts/truetype/noto && \
-    mv *.otf usr/share/fonts/truetype/noto/ && \
-    fc-cache && \
-    rm NotoSansCJKjp-hinted.zip
 
 RUN sed -i 's/"$@"/"$@" --no-sandbox/' chrome-linux/chrome-wrapper && \
     ln -s /chrome-linux/chrome-wrapper /usr/bin/google-chrome

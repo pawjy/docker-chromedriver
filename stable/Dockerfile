@@ -1,7 +1,9 @@
 FROM quay.io/wakaba/base:stable
 
 RUN apt-get update && \
-    apt-get -y install libglib2.0 libnss3-dev libxtst6 libxss1 libfontconfig1 libpango-1.0-0 libxcursor1 libxcomposite1 libasound2 libxdamage1 libxrandr2 libcups2 libgtk-3-0 curl unzip xvfb fonts-noto fonts-liberation libexif12 pulseaudio \
+    apt-get -y install libglib2.0 libnss3-dev libxtst6 libxss1 libfontconfig1 libpango-1.0-0 libxcursor1 libxcomposite1 libasound2 libxdamage1 libxrandr2 libcups2 libgtk-3-0 curl unzip xvfb \
+        fonts-noto fonts-liberation fonts-noto-cjk \
+        libexif12 pulseaudio \
         ffmpeg libgbm1 libu2f-udev libgbm-dev libglx-mesa0 libgl1 libegl1 libnss3 \
         libcurl4 xdg-utils lsb-release jq && \
     rm -rf /var/lib/apt/lists/* && \
@@ -18,13 +20,6 @@ RUN curl -f https://googlechromelabs.github.io/chrome-for-testing/last-known-goo
     unzip /tmp/chromedriver.zip && \
     mv chromedriver-linux64/chromedriver /chromedriver && \
     rm -fr /tmp/chrome* chromedriver-linux64
-
-RUN curl -f https://noto-website-2.storage.googleapis.com/pkgs/NotoSansCJKjp-hinted.zip > /tmp/NotoSansCJKjp-hinted.zip && \
-    mkdir -p usr/share/fonts/truetype/noto && \
-    cd usr/share/fonts/truetype/noto && \
-    unzip /tmp/NotoSansCJKjp-hinted.zip && \
-    fc-cache && \
-    rm /tmp/NotoSansCJKjp-hinted.zip
 
 RUN echo "#!/bin/bash" > /cd && \
     echo 'exec /cd-bare --whitelisted-ips 0.0.0.0/0 --allowed-origins=*' >> /cd && \
