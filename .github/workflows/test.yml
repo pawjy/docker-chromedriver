@@ -101,10 +101,10 @@
                "run" : "make deps-circleci"
             },
             {
-               "run" : "docker build -t quay\u005C.io\u005C/wakaba\u005C/chromedriver\u005C:stable stable"
+               "run" : "docker build --cache-from quay\u005C.io\u005C/wakaba\u005C/chromedriver\u005C:stable -t quay\u005C.io\u005C/wakaba\u005C/chromedriver\u005C:stable stable"
             },
             {
-               "run" : "docker build -t quay\u005C.io\u005C/wakaba\u005C/chromedriver\u005C:chromium chromium"
+               "run" : "docker build --cache-from quay\u005C.io\u005C/wakaba\u005C/chromedriver\u005C:chromium -t quay\u005C.io\u005C/wakaba\u005C/chromedriver\u005C:chromium chromium"
             },
             {
                "run" : "make test-circleci"
